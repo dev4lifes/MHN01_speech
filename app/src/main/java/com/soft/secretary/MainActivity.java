@@ -1,11 +1,12 @@
 package com.soft.secretary;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity
     private TextView txtname;
     private Context context;
 
+
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity
       //  this.getWindow().requestFeature(Window.FEATURE_PROGRESS);
 
         setContentView(R.layout.activity_main);
-//        checkInternetConenction();
+      isInternetOn();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,8 +97,8 @@ public class MainActivity extends AppCompatActivity
 
     private void promptSpeechInput() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,new  Locale("vi"));
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,new Locale("vi"));
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
                 getString(R.string.speech_prompt));
         try {
@@ -229,8 +232,38 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            new AlertDialog.Builder(this)
+                    .setIcon(R.drawable.ico_mic)
+                    .setTitle("Hello")
+
+                    .setMessage("xác nhận thoát ra !" )
+                    .setNegativeButton("Có", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startService(new Intent(MainActivity.this, ChatService.class));
+                           finish();
+
+                        }
+
+                    })
+                    .setPositiveButton("Không", new DialogInterface.OnClickListener(){
+
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+
+
+                    .show();
+
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        startService(new Intent(MainActivity.this, ChatService.class));
+        super.onDestroy();
     }
 
     @Override
@@ -264,7 +297,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-            Toast.makeText(MainActivity.this,"ABC",Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "ABC", Toast.LENGTH_LONG).show();
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -281,23 +314,29 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
     // check Internet conenction.
-    private void checkInternetConenction() {
-        ConnectivityManager check = (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = check.getActiveNetworkInfo();
-        if (ni != null) {
-            NetworkInfo[] info = check.getAllNetworkInfo();
-            if (info != null)
-                for (int i = 0; i < info.length; i++)
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-//                  Toast.makeText(context,"ab",Toast.LENGTH_SHORT).show();
-                    }
+    public final boolean isInternetOn() {
 
-        } else {
-            Toast.makeText(context, "không có kết nối Internet",
-                    Toast.LENGTH_SHORT).show();
-            //Day la dong lenh moi
+        // get Connectivity Manager object to check connection
+        ConnectivityManager connec =(ConnectivityManager)getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
+
+        // Check for network connections
+        if ( connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
+                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
+                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||
+                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTED ) {
+
+            // if connected with internet
+
+
+            return true;
+
+        } else if (
+                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.DISCONNECTED ||
+                        connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.DISCONNECTED  ) {
+
+            Toast.makeText(this, "không có kết nối mạng vui lòng thử lại", Toast.LENGTH_LONG).show();
+            return false;
         }
-
-
+        return false;
     }
 }
