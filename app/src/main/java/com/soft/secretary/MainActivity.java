@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity
       //  this.getWindow().requestFeature(Window.FEATURE_PROGRESS);
 
         setContentView(R.layout.activity_main);
-//        checkInternetConenction();
+        checkInternetConenction();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -282,21 +282,17 @@ public class MainActivity extends AppCompatActivity
     }
     // check Internet conenction.
     private void checkInternetConenction() {
-        ConnectivityManager check = (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = check.getActiveNetworkInfo();
-        if (ni != null) {
-            NetworkInfo[] info = check.getAllNetworkInfo();
-            if (info != null)
-                for (int i = 0; i < info.length; i++)
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-//                  Toast.makeText(context,"ab",Toast.LENGTH_SHORT).show();
-                    }
+        ConnectivityManager cm =
+                (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        } else {
-            Toast.makeText(context, "không có kết nối Internet",
-                    Toast.LENGTH_SHORT).show();
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if (!isConnected){
+            Toast.makeText(this,getString(R.string.annouce_lost_connect_internet),Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(this,getString(R.string.annouce_has_connect_internet),Toast.LENGTH_SHORT).show();
         }
-
 
     }
 }
