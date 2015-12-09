@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity
     private TextView txtname;
     private Context context;
 
+    //Tao mot bien moi
+
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
