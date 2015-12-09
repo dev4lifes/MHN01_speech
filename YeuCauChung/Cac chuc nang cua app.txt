@@ -1,0 +1,13 @@
+Chức năng: 
+1. Hướng dẫn sử dụng và hỏi tên người dùng (để xưng hô khi trả lời các câu hỏi)
+2. Hỏi thông tin 
+3. Tìm kiếm, 
+4. Duyệt web, 
+5. Đặt báo thức, 
+6. Gọi điện, 
+7. Tra danh bạ, 
+8. Tìm đường đến.... các chức năng app của google, 
+9. Mở các ứng dụng trong máy chỉ cần nhớ tên
+10. Xử lí các câu hỏi vui người dùng hoặc random ra các câu danh ngôn, truyện vui VD câu hỏi: mày là ai, bao giờ có ny....
+11. Chức năng như hỏi troll, 
+12. Tra thuốc
