@@ -293,6 +293,7 @@ public class MainActivity extends AppCompatActivity
         }else {
             Toast.makeText(this,getString(R.string.annouce_has_connect_internet),Toast.LENGTH_SHORT).show();
         }
+        //day la comment moi
 
     }
 }
