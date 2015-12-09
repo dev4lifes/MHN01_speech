@@ -295,6 +295,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             Toast.makeText(context, "không có kết nối Internet",
                     Toast.LENGTH_SHORT).show();
+            //Day la dong lenh moi
         }
 
 
