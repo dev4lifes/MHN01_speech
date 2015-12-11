@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -23,6 +24,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.soft.secretary.support.ScreenManager;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity
       //  this.getWindow().requestFeature(Window.FEATURE_PROGRESS);
 
         setContentView(R.layout.activity_main);
-      isInternetOn();
+        isInternetOn();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,20 +82,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        //dem
-//        final Activity MyActivity = this;
-//        mWebView.setWebChromeClient(new WebChromeClient() {
-//            public void onProgressChanged(WebView view, int progress) {
-//                //Make the bar disappear after URL is loaded, and changes string to Loading...
-//                MyActivity.setTitle("Loading...");
-//                MyActivity.setProgress(progress * 100); //Make the bar disappear after URL is loaded
-//
-//                // Return the app name after finish loading
-//                if (progress == 100)
-//                    MyActivity.setTitle(gettit());
-//            }
-//        });
 
     }
 
@@ -318,27 +307,19 @@ public class MainActivity extends AppCompatActivity
     // check Internet conenction.
     public final boolean isInternetOn() {
 
-        // get Connectivity Manager object to check connection
-        ConnectivityManager connec =(ConnectivityManager)getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-        // Check for network connections
-        if ( connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
-                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
-                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||
-                connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTED ) {
-                //may phuong thuc nay bo roi
-            // if connected with internet
-
-
+        if (networkInfo != null && networkInfo.isConnected()) {
+            //display if connect
+            ScreenManager.getInstance().showToast(this,getResources().getString(R.string.connected_internet_notify),1);
             return true;
-
-        } else if (
-                connec.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.DISCONNECTED ||
-                        connec.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.DISCONNECTED  ) {
-
-            Toast.makeText(this, "không có kết nối mạng vui lòng thử lại", Toast.LENGTH_LONG).show();
+        } else {
+            // display error
+            ScreenManager.getInstance().showToast(this,getResources().getString(R.string.not_connect_internet_notify),1);
             return false;
         }
-        return false;
     }
+
 }

@@ -9,5 +9,7 @@
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
     <string name="notification_running">Secretary is running</string>
     <string name="notification_title">Secretary</string>
+    <string name="connected_internet_notify">Connected Internet</string>
+    <string name="not_connect_internet_notify">Check your connnection</string>
 
 </resources>

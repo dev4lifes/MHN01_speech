@@ -30,9 +30,7 @@ import android.widget.TextView;
  * Created by hoang on 08/12/2015.
  */
 public class ChatService extends Service {
-
-
-
+    
         private WindowManager windowManager;
         private RelativeLayout chatheadView, removeView;
         private LinearLayout txtView, txt_linearlayout;
