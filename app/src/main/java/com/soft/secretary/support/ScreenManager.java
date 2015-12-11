@@ -10,6 +10,8 @@ public class ScreenManager implements IScreen {
 
     private volatile static ScreenManager uniqueInstance;
 
+    public static final int LENGTH = 1;
+    public static final int SHORT = 0;
     private ScreenManager(){}
 
 
@@ -29,11 +31,15 @@ public class ScreenManager implements IScreen {
      *
      * @param context take this if in any Activity, if not is context
      * @param message message to show on screen
-     * @param lengthTime take 1 if Length, 0 if Short
+     * @param lengthTime take LENGTH if Length, SHORT if Short
      */
     @Override
     public void showToast(Context context,String message,int lengthTime) {
-        Toast.makeText(context,message,Toast.LENGTH_LONG).show();
+        if (lengthTime==LENGTH){
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+        }
     }
 
 

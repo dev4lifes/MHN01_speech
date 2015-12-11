@@ -44,13 +44,12 @@ public class MainActivity extends AppCompatActivity
     //Tao mot bien moi
 
 
-
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-      //  this.getWindow().requestFeature(Window.FEATURE_PROGRESS);
+        //  this.getWindow().requestFeature(Window.FEATURE_PROGRESS);
 
         setContentView(R.layout.activity_main);
         isInternetOn();
@@ -58,9 +57,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        txtSpeechInput= (TextView)findViewById(R.id.txtSpeechInput);
-        txtdap=(TextView)findViewById(R.id.dap);
-        txtname=(TextView)findViewById(R.id.name);
+        txtSpeechInput = (TextView) findViewById(R.id.txtSpeechInput);
+        txtdap = (TextView) findViewById(R.id.dap);
+        txtname = (TextView) findViewById(R.id.name);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -89,21 +88,20 @@ public class MainActivity extends AppCompatActivity
     private void promptSpeechInput() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,new Locale("vi"));
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, new Locale("vi"));
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
                 getString(R.string.speech_prompt));
         try {
             startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
         } catch (ActivityNotFoundException a) {
-            Toast.makeText(getApplicationContext(),
-                    getString(R.string.speech_not_supported),
-                    Toast.LENGTH_SHORT).show();
+            ScreenManager.getInstance().showToast(this, getResources().getString(R.string.speech_not_supported), ScreenManager.LENGTH);
         }
     }
-    public  void name(){
+
+    public void name() {
 
         boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
-        if (firstrun){
+        if (firstrun) {
 //			Toast.makeText(this, "lan dau", Toast.LENGTH_LONG).show();
 
 
@@ -112,18 +110,17 @@ public class MainActivity extends AppCompatActivity
 //        txtname.setText("Xin chào"+ user.toString() +"Tôi có thể giúp gì cho bạn ?");
 
 
-    }}
+        }
+    }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-
         switch (requestCode) {
             case REQ_CODE_SPEECH_INPUT: {
                 if (resultCode == RESULT_OK && null != data) {
-
                     ArrayList<String> result = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     txtSpeechInput.setText(result.get(0));
@@ -138,16 +135,15 @@ public class MainActivity extends AppCompatActivity
                         txtdap.setText(dateFormat.format(date));
 
 
-                    }
-                 else if (txtSpeechInput.getText().toString().startsWith("Năm nay là năm")){
+                    } else if (txtSpeechInput.getText().toString().startsWith("Năm nay là năm")) {
 
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy");
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy");
 
-                    Date date = new Date();
-                    txtdap.setText(dateFormat.format(date));
+                        Date date = new Date();
+                        txtdap.setText(dateFormat.format(date));
 
 
-                } else if (result.get(0).toString().startsWith("tìm kiếm", 0)) {
+                    } else if (result.get(0).toString().startsWith("tìm kiếm", 0)) {
 
                         Toast.makeText(this, result.get(0), Toast.LENGTH_LONG).show();
 
@@ -168,20 +164,18 @@ public class MainActivity extends AppCompatActivity
                         startActivity(intent);
 
 
-
-
-                } else if (result.get(0).toString().startsWith("mày là ai")||(result.get(0).toString().startsWith("mày là đứa nào"))||(result.get(0).toString().startsWith("mày tên là gì"))) {
-                    Toast.makeText(this, result.get(0), Toast.LENGTH_LONG).show();
+                    } else if (result.get(0).toString().startsWith("mày là ai") || (result.get(0).toString().startsWith("mày là đứa nào")) || (result.get(0).toString().startsWith("mày tên là gì"))) {
+                        Toast.makeText(this, result.get(0), Toast.LENGTH_LONG).show();
                         String a = result.get(0).replace("mày là ai", "mày là ai ?");
                         txtdap.setText("Mình là ");
 
-                    } else if (result.get(0).toString().startsWith("bao giờ có người yêu")||(result.get(0).toString().startsWith("bao giờ mới có người yêu"))) {
+                    } else if (result.get(0).toString().startsWith("bao giờ có người yêu") || (result.get(0).toString().startsWith("bao giờ mới có người yêu"))) {
                         Toast.makeText(this, result.get(0), Toast.LENGTH_LONG).show();
 
                         txtdap.setText("0966248794(với nữ) 0968585496(với nam)");
-                    } else if (result.get(0).toString().startsWith("danh ngôn")||(result.get(0).toString().startsWith("danh ngôn hay"))) {
+                    } else if (result.get(0).toString().startsWith("danh ngôn") || (result.get(0).toString().startsWith("danh ngôn hay"))) {
                         Toast.makeText(this, result.get(0), Toast.LENGTH_LONG).show();
-                       ArrayList list= new ArrayList();
+                        ArrayList list = new ArrayList();
                         list.add("a");
                         list.add("b");
                         list.add("c");
@@ -189,8 +183,7 @@ public class MainActivity extends AppCompatActivity
                         txtdap.setText("Mình là đệ của anh Nam :v");
 
 
-                    }
-                    else if (result.get(0).toString().startsWith("Tìm kiếm", 0)) {
+                    } else if (result.get(0).toString().startsWith("Tìm kiếm", 0)) {
                         Toast.makeText(this, result.get(0), Toast.LENGTH_LONG).show();
                         String a = result.get(0).replace("Tìm kiếm", "");
 
@@ -198,8 +191,7 @@ public class MainActivity extends AppCompatActivity
                         intent.putExtra("url", a);
                         startActivity(intent);
 
-                    }
-                    else {
+                    } else {
 
                         Toast.makeText(this, result.get(0), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(this, MyWebView.class);
@@ -213,10 +205,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
-
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -227,17 +215,17 @@ public class MainActivity extends AppCompatActivity
                     .setIcon(R.drawable.ico_mic)
                     .setTitle("Hello")
 
-                    .setMessage("xác nhận thoát ra !" )
+                    .setMessage("xác nhận thoát ra !")
                     .setNegativeButton("Có", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             startService(new Intent(MainActivity.this, ChatService.class));
-                           finish();
+                            finish();
 
                         }
 
                     })
-                    .setPositiveButton("Không", new DialogInterface.OnClickListener(){
+                    .setPositiveButton("Không", new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -304,6 +292,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     // check Internet conenction.
     public final boolean isInternetOn() {
 
@@ -313,11 +302,11 @@ public class MainActivity extends AppCompatActivity
 
         if (networkInfo != null && networkInfo.isConnected()) {
             //display if connect
-            ScreenManager.getInstance().showToast(this,getResources().getString(R.string.connected_internet_notify),1);
+            ScreenManager.getInstance().showToast(this, getResources().getString(R.string.connected_internet_notify), ScreenManager.LENGTH);
             return true;
         } else {
             // display error
-            ScreenManager.getInstance().showToast(this,getResources().getString(R.string.not_connect_internet_notify),1);
+            ScreenManager.getInstance().showToast(this, getResources().getString(R.string.not_connect_internet_notify), ScreenManager.LENGTH);
             return false;
         }
     }

@@ -22,6 +22,8 @@ import java.net.URLEncoder;
 public class MyWebView extends AppCompatActivity {
     WebView mWebView;
 
+    private final String SEARCH_GOOGLE = "https://www.google.com/search?q=";
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,6 @@ public class MyWebView extends AppCompatActivity {
         if (query.equals("")) {
             return;
         }
-        String SEARCH = "https://www.google.com/search?q=";
         query = query.trim();
         mWebView.stopLoading();
 
@@ -84,7 +85,7 @@ public class MyWebView extends AppCompatActivity {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            mWebView.loadUrl(SEARCH + query);
+            mWebView.loadUrl(SEARCH_GOOGLE + query);
         } else if (!validURL) {
             mWebView.loadUrl("http://" + query);
         } else {
